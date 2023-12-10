@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/plantes
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: admin
+
+  # Configuration Hibernate pour créer automatiquement les tables (pour la démo, pas recommandé en production)
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+
+# Désactivation des configurations spécifiques aux tests
+test:
+  exclude:
+    datasource:
+      url: jdbc:postgresql://localhost:5432/plantes
+      driverClassName: org.h2.Driver
+      username: postgres
+      password: admin
+
+

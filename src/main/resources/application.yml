@@ -9,11 +9,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-
-
+    open-in-view: false
 # Désactivation des configurations spécifiques aux tests
 test:
   exclude:

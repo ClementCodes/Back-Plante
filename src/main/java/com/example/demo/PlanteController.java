@@ -35,6 +35,8 @@ public class PlanteController {
         return planteService.savePlante(plante);
     }
 
+    
+    // test
     @PutMapping("/{id}")
     public Plante updatePlante(@PathVariable Long id, @RequestBody Plante plante) {
         // Assurez-vous que l'ID dans le chemin correspond à l'ID dans le corps de la requête

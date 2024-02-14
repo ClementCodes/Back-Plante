@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.sql.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +16,9 @@ public class Plante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String plante;
+	private String nom;
+
+	private String age;
+	private String dateArrosage;
 
 }

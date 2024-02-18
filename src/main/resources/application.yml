@@ -18,5 +18,3 @@ test:
       driverClassName: org.h2.Driver
       username: postgres
       password: admin
-
-

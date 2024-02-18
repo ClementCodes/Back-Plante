@@ -17,6 +17,12 @@ public class Plante {
 	private Long id;
 
 	private String nom;
+	
+	private String age;
+	
+	private String dateArrosage;
+	
+	
 
 	private String age;
 	private String dateArrosage;

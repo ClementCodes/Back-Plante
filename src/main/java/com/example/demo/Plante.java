@@ -24,7 +24,5 @@ public class Plante {
 	
 	
 
-	private String age;
-	private String dateArrosage;
 
 }

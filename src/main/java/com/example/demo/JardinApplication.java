@@ -8,7 +8,7 @@ public class JardinApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(JardinApplication.class, args);
-		Plante plante = new Plante();
+//		Plante plante = new Plante();
 		
 	}
 

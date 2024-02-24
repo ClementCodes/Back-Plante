@@ -1,9 +1,10 @@
 package main.app.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,45 +14,44 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import main.app.dto.PlanteDto;
 import main.app.entities.Plante;
 import main.app.services.PlanteService;
 
 @RestController
 @RequestMapping("/plantes")
 public class PlanteController {
-
-    @Autowired
-    private PlanteService planteService;
-
-    @GetMapping
-    public List<Plante> getAllPlantes() {
-        return planteService.getAllPlantes();
-    }
-
-    @GetMapping("/{id}")
-    public Optional<Plante> getPlanteById(@PathVariable Long id) {
-        return planteService.getPlanteById(id);
-    }
-
-    @PostMapping
-    public Plante savePlante(@RequestBody Plante plante) {
-        return planteService.savePlante(plante);
-    }
-
     
-    // test
-    @PutMapping("/{id}")
-    public Plante updatePlante(@PathVariable Long id, @RequestBody Plante plante) {
-        // Assurez-vous que l'ID dans le chemin correspond à l'ID dans le corps de la requête
-    	
-        plante.setId(id);
-        return planteService.savePlante(plante);
-    }
+	 @Autowired
+	    private PlanteService planteService;
 
-    @DeleteMapping("/{id}")
-    public void deletePlante(@PathVariable Long id) {
-        planteService.deletePlante(id);
-    }
-}
+	    @PostMapping
+	    public ResponseEntity<Plante> createPlante(@RequestBody PlanteDto planteDto) {
+	        Plante createdPlante = planteService.createPlante(planteDto);
+	        return new ResponseEntity<>(createdPlante, HttpStatus.CREATED);
+	    }
 
+	    @GetMapping("/{id}")
+	    public ResponseEntity<Plante> getPlanteById(@PathVariable Long id) {
+	        Plante plante = planteService.getPlanteById(id);
+	        return ResponseEntity.ok(plante);
+	    }
 
+	    @GetMapping
+	    public ResponseEntity<List<Plante>> getAllPlantes() {
+	        List<Plante> plantes = planteService.getAllPlantes();
+	        return ResponseEntity.ok(plantes);
+	    }
+
+	    @PutMapping("/{id}")
+	    public ResponseEntity<Plante> updatePlante(@PathVariable Long id, @RequestBody PlanteDto planteDto) {
+	        Plante updatedPlante = planteService.updatePlante(id, planteDto);
+	        return ResponseEntity.ok(updatedPlante);
+	    }
+
+	    @DeleteMapping("/{id}")
+	    public ResponseEntity<Void> deletePlante(@PathVariable Long id) {
+	        planteService.deletePlante(id);
+	        return ResponseEntity.noContent().build();
+	    }
+	}

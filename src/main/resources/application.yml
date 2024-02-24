@@ -18,4 +18,13 @@ test:
       driverClassName: org.h2.Driver
       username: postgres
       password: admin
-      
+logging:
+  level:
+    root: DEBUG
+    spring:
+security:
+  user:
+    name: name
+    password: password
+
+    

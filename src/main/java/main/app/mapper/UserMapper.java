@@ -1,9 +1,11 @@
-package com.example.demo.maper;
+package main.app.mapper;
 
 import org.mapstruct.Mapper;
 
-import com.example.demo.dto.UserDto;
-import com.example.demo.entities.User;
+import main.app.dto.UserDto;
+import main.app.entities.User;
+
+
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

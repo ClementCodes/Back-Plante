@@ -1,6 +1,4 @@
-package com.example.demo.entities;
-
-
+package main.app.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,31 +7,31 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
 @Table(name = "app_user")
 public class User {
-	
+
 	@Id
 	private Long id;
-	
-	@Column(name = "first_name" ,nullable = false)
+
+	@Column(name = "first_name", nullable = false)
 	private String firstname;
-	
-	@Column(name = "last_name" ,nullable = false)
+
+	@Column(name = "last_name", nullable = false)
 	private String lastName;
-	
-	@Column(name = "login" ,nullable = false)
+
+	@Column(name = "login", nullable = false)
 	private String login;
-	
-	@Column(name = "role" ,nullable = false)
+
+	@Column(name = "role", nullable = false)
 	private String role;
-	
-	@Column(name = "password" ,nullable = false)
+
+	@Column(name = "password", nullable = false)
 	private String password;
 }
-
-

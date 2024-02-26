@@ -73,18 +73,29 @@ public class UserServiceImpl implements  UserDetailsService ,UserService {
 		return userRepository.findByUserName(username);
 	}
 
-	 @Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		DBUser user = dbUserRepository.findByUsername(username);
-		
-		return new User(user.getUsername(), user.getPassword(), getGrantedAuthorities(user.getRole()));
-	}
+
+	 
+	   @Override
+	    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	        UserDb user = userRepository.findByUserName(username);
+	        if (user == null) {
+	            throw new UsernameNotFoundException("Utilisateur non trouvé avec le nom d'utilisateur: " + username);
+	        }
+
+	        return User.withUsername(user.getUserName())
+	                .password(user.getPassword())
+	                .roles(user.getRole()) // Assurez-vous que le rôle est correctement formatté
+	                .build();
+	    }
+	
 
 	private List<GrantedAuthority> getGrantedAuthorities(String role) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
 		return authorities;
 	}
+
+
 
 
 }

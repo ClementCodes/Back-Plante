@@ -21,5 +21,4 @@ public interface UserService {
 
 	UserDb findbyUserName(String username) throws UsernameNotFoundException;
 
-	UserDb loadUserByUsername(String username) throws UsernameNotFoundException;
 }

@@ -1,5 +1,9 @@
 package main.app.entities;
 
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,17 +21,18 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @Table(name = "app_user")
-public class User {
+public class UserDb {
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "first_name", nullable = false)
+	@Column(name = "firstName", nullable = false)
 	private String firstname;
 
-	@Column(name = "last_name", nullable = false)
-	private String lastName;
+	@Column(name = "UserName", nullable = false)
+	private String userName;
 
 	@Column(name = "login", nullable = false)
 	private String login;

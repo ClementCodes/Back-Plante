@@ -4,11 +4,17 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import main.app.entities.User;
+import main.app.entities.UserDb;
 
 
-public interface UserRepository extends JpaRepository<User, Long> {
+
+
+
+public interface UserRepository extends JpaRepository<UserDb, Long> {
     // Vous pouvez ajouter des méthodes spécifiques de requête ici si nécessaire
 	
-	Optional<User> findByLogin(String login);
+	Optional<UserDb> findByLogin(String login);
+
+	UserDb findByUserName(String username);
+	
 }

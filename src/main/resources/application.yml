@@ -22,9 +22,6 @@ logging:
   level:
     root: DEBUG
     spring:
-security:
-  user:
-    name: name
-    password: password
+
 
     

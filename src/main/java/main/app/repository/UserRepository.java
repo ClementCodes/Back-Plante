@@ -8,8 +8,6 @@ import main.app.entities.UserDb;
 
 
 
-
-
 public interface UserRepository extends JpaRepository<UserDb, Long> {
     // Vous pouvez ajouter des méthodes spécifiques de requête ici si nécessaire
 	

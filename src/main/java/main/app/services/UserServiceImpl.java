@@ -4,15 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Service;
 
 import main.app.dto.UserDto;
@@ -23,8 +21,11 @@ import main.app.repository.UserRepository;
 
 
 
+
+
+@Configuration
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements  UserDetailsService ,UserService {
     
     @Autowired
     private UserRepository userRepository;
@@ -66,25 +67,17 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-	
+   
 	public UserDb findbyUserName(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		return userRepository.findByUserName(username);
 	}
 
-
-
-	@Override
+	 @Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		DBUser user = dbUserRepository.findByUsername(username);
 		
-		
-		UserDb user  = user.builder()
-				.userName(user.setUserName(username))
-				.password(passwordEncoder().encode("user"))
-				.roles("USER").build();
-		UserDb user = userRepository.findByUserName(username);
-		
-		return  new User(user.getUserName(), user.getPassword(), getGrantedAuthorities(user.getRole()));
+		return new User(user.getUsername(), user.getPassword(), getGrantedAuthorities(user.getRole()));
 	}
 
 	private List<GrantedAuthority> getGrantedAuthorities(String role) {
@@ -94,33 +87,4 @@ public class UserServiceImpl implements UserService {
 	}
 
 
-
-	@Bean
-	public UserDetailsService users() {
-		UserDetails user = User.builder()
-				.username("user")
-				.password(passwordEncoder().encode("user"))
-				.roles("USER").build();
-		UserDetails admin = User.builder()
-				.username("admin")
-				.password(passwordEncoder().encode("admin"))
-				.roles("USER", "ADMIN").build();
-		return new InMemoryUserDetailsManager(user, admin);
-	}
-	
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
-
-    
-    
-	
-
-    
-    
-    
-    
-    
 }

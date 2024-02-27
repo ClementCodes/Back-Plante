@@ -3,9 +3,9 @@ package main.app.repository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import main.app.entities.UserDb;
-
 
 
 public interface UserRepository extends JpaRepository<UserDb, Long> {
@@ -13,6 +13,6 @@ public interface UserRepository extends JpaRepository<UserDb, Long> {
 	
 	Optional<UserDb> findByLogin(String login);
 
-	UserDb findByUserName(String username);
+//	UserDb findByUserName(String username);
 	
 }

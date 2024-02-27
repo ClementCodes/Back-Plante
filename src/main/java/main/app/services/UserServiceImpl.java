@@ -1,101 +1,67 @@
 package main.app.services;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.CharBuffer;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+import main.app.dto.CredentialsDto;
+import main.app.dto.SignUpDto;
 import main.app.dto.UserDto;
 import main.app.entities.UserDb;
+import main.app.enums.Role;
+import main.app.exception.AppException;
 import main.app.mapper.UserMapper;
 import main.app.repository.UserRepository;
 
 
-
-
-
-
-@Configuration
+@RequiredArgsConstructor
 @Service
-public class UserServiceImpl implements  UserDetailsService ,UserService {
-    
-    @Autowired
-    private UserRepository userRepository;
+public class UserServiceImpl implements UserService {
 
-    @Override
-    public UserDb createUser(UserDto userDto) {
-        UserDb user = UserMapper.INSTANCE.toUser(userDto);
-        return userRepository.save(user);
-    }
-
-    @Override
-    public UserDb getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public List<UserDb> getAllUsers() {
-        return userRepository.findAll();
-    }
-    
-
-    @Override
-    public UserDb updateUser(Long id, UserDto userDto) {
-        UserDb existingUser = userRepository.findById(id).orElse(null);
-        if (existingUser == null) {
-            return null; // Gérer le cas où l'utilisateur n'existe pas
-        }
-        // Mettre à jour les champs de l'utilisateur existant avec les données du DTO
-        existingUser.setFirstname(userDto.getFirstName());
-        existingUser.setUserName(userDto.getUserName());
-        existingUser.setLogin(userDto.getLogin());
-        existingUser.setRole(userDto.getRole());
-        // Ne pas oublier de gérer le champ "token" si nécessaire
-        return userRepository.save(existingUser);
-    }
-
-    @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
-    }
-
-   
-	public UserDb findbyUserName(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		return userRepository.findByUserName(username);
-	}
-
-
-	 
-	   @Override
-	    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	        UserDb user = userRepository.findByUserName(username);
-	        if (user == null) {
-	            throw new UsernameNotFoundException("Utilisateur non trouvé avec le nom d'utilisateur: " + username);
-	        }
-
-	        return User.withUsername(user.getUserName())
-	                .password(user.getPassword())
-	                .roles(user.getRole()) // Assurez-vous que le rôle est correctement formatté
-	                .build();
-	    }
 	
+	private UserRepository userRepository;
 
-	private List<GrantedAuthority> getGrantedAuthorities(String role) {
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
-		return authorities;
+	public final PasswordEncoder passwordEncoder;
+
+	private final UserMapper userMapper;
+
+	@Override
+	public UserDto login(CredentialsDto credentialsDto) {
+		UserDb user = userRepository.findByLogin(credentialsDto.getLogin())
+				.orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+
+		if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), user.getPassword())) {
+			return userMapper.toUserDto(user);
+		}
+		throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
 	}
 
+	@Override
+	public UserDto register(SignUpDto userDto) {
+		Optional<UserDb> optionalUser = userRepository.findByLogin(userDto.getLogin());
 
+		if (optionalUser.isPresent()) {
+			throw new AppException("Login already exists", HttpStatus.BAD_REQUEST);
+		}
 
+		UserDb user = userMapper.signUpToUser(userDto);
+		user.setRole(Role.USER);
+		user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.getPassword())));
+
+		UserDb savedUser = userRepository.save(user);
+
+		return userMapper.toUserDto(savedUser);
+	}
+
+	@Override
+	public UserDto findByLogin(String login) {
+		UserDb user = userRepository.findByLogin(login)
+				.orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+		return userMapper.toUserDto(user);
+	}
 
 }

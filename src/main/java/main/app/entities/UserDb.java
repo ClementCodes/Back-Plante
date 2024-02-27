@@ -1,11 +1,9 @@
 package main.app.entities;
 
-import java.util.List;
-
-import org.springframework.security.core.GrantedAuthority;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import main.app.enums.Role;
 
 @Data
 @Entity
@@ -37,8 +36,10 @@ public class UserDb {
 	@Column(name = "login", nullable = false)
 	private String login;
 
+	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "role", nullable = false)
-	private String role;
+	private   Role role;
 
 	@Column(name = "password", nullable = false)
 	private String password;

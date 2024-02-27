@@ -1,18 +1,29 @@
 package main.app.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//Records are immutable only for reception so it's why i'am using here a record expression
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CredentialsDto {
+public class SignUpDto {
 
+    @NotEmpty
+    private String firstName;
+
+    @NotEmpty
+    private String lastName;
+
+    @NotEmpty
     private String login;
+
+    @NotEmpty
     private char[] password;
+
 
 }

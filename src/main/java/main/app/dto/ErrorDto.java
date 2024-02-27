@@ -1,7 +1,14 @@
 package main.app.dto;
 
-public record ErrorDto (String message)  {
-	
-	
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+
+@AllArgsConstructor
+@Data
+@Builder
+public class ErrorDto {
+
+    private String message;
 }

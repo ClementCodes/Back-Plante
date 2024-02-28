@@ -30,24 +30,20 @@ public class UserServiceImpl implements  UserDetailsService ,UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Override
     public UserDb createUser(UserDto userDto) {
         UserDb user = UserMapper.INSTANCE.toUser(userDto);
         return userRepository.save(user);
     }
 
-    @Override
     public UserDb getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
-    @Override
     public List<UserDb> getAllUsers() {
         return userRepository.findAll();
     }
     
 
-    @Override
     public UserDb updateUser(Long id, UserDto userDto) {
         UserDb existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
@@ -62,32 +58,23 @@ public class UserServiceImpl implements  UserDetailsService ,UserService {
         return userRepository.save(existingUser);
     }
 
-    @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
-   
-	public UserDb findbyUserName(String username) throws UsernameNotFoundException {
+    public UserDb findbyUserName(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
-		return userRepository.findByUserName(username);
+		return userRepository.findByUsername(username);
 	}
 
 
 	 
-	   @Override
-	    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	        UserDb user = userRepository.findByUserName(username);
-	        if (user == null) {
-	            throw new UsernameNotFoundException("Utilisateur non trouvé avec le nom d'utilisateur: " + username);
-	        }
-
-	        return User.withUsername(user.getUserName())
-	                .password(user.getPassword())
-	                .roles(user.getRole()) // Assurez-vous que le rôle est correctement formatté
-	                .build();
-	    }
-	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		UserDb user = userRepository.findByUsername(username);
+		
+		return new User(user.getUserName(), user.getPassword(), getGrantedAuthorities(user.getRole()));
+	}
 
 	private List<GrantedAuthority> getGrantedAuthorities(String role) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();

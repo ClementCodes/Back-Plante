@@ -64,14 +64,14 @@ public class UserServiceImpl implements  UserDetailsService ,UserService {
 
     public UserDb findbyUserName(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
-		return userRepository.findByUsername(username);
+		return userRepository.findByUserName(username);
 	}
 
 
 	 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserDb user = userRepository.findByUsername(username);
+		UserDb user = userRepository.findByUserName(username);
 		
 		return new User(user.getUserName(), user.getPassword(), getGrantedAuthorities(user.getRole()));
 	}

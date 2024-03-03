@@ -20,8 +20,13 @@ test:
       password: admin
 logging:
   level:
-    root: DEBUG
-    spring:
+    org:
+      springframework:
+        security: TRACE
+
+
+    
+security.jwt.token.secret-key: my-secret-key
 
 
     

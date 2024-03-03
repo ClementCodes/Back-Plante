@@ -5,23 +5,14 @@ import org.springframework.http.HttpStatus;
 public class AppException  extends RuntimeException {
 	
 	
-	private final HttpStatus httpStatus;
-	
-	
-	public AppException(String message, HttpStatus httpStatus) {
-		
-		super(message);
-		this.httpStatus = httpStatus;
-		
-		
-	}
-	
+    private final HttpStatus status;
 
-	
-	public HttpStatus getHttppStatus() {
-		
-		return httpStatus;
-		
-		
-	}
+    public AppException(String message, HttpStatus status) {
+        super(message);
+        this.status = status;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
+    }
 }

@@ -19,7 +19,7 @@ import main.app.entities.Plante;
 import main.app.services.PlanteService;
 
 @RestController
-@RequestMapping("/plantes")
+@RequestMapping("/admin/plantes")
 public class PlanteController {
     
 	 @Autowired

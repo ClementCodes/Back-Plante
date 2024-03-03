@@ -11,16 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserDto {
 
-	private Long id;
-
-	private String firstName;
-
-	private String UserName;
-
-	private String login; // Ajout du champ "role"
-
-	private String role; // Ajout du champ "role"
-
-	private String token; // Ajout du champ "role"
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String login;
+    private String token;
 
 }

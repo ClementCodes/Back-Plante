@@ -2,20 +2,19 @@ package main.app.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
+import main.app.dto.SignUpDto;
 import main.app.dto.UserDto;
-import main.app.entities.UserDb;
+import main.app.entities.User;
 
 
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-	 UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
-	 
-	  @Mapping(target = "id", ignore = true)
-      UserDb toUser(UserDto userdto);
+    UserDto toUserDto(User user);
 
-//    User toEntity(UserDto userDto);
+    @Mapping(target = "password", ignore = true)
+    User signUpToUser(SignUpDto signUpDto);
+
 }

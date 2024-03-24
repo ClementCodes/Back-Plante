@@ -1,5 +1,6 @@
 package main.app.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,21 +15,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
+import main.app.config.UserAuthenticationProvider;
 import main.app.dto.PlanteDto;
 import main.app.entities.Plante;
 import main.app.services.PlanteService;
+import main.app.services.UserServiceImpl;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/plantes")
 public class PlanteController {
     
 	 @Autowired
 	    private PlanteService planteService;
-
+	 
+//	 private final UserAuthenticationProvider userAuthenticationProvider;
+//
+//	    @PostMapping
+//	    public ResponseEntity<Plante> createPlante(@RequestBody PlanteDto planteDto) {
+//	    	
+//	        Plante createdPlante = planteService.createPlante(planteDto);
+//	        return new ResponseEntity<>(createdPlante, HttpStatus.CREATED);
+//	    }
+//	    
 	    @PostMapping
-	    public ResponseEntity<Plante> createPlante(@RequestBody PlanteDto planteDto) {
-	        Plante createdPlante = planteService.createPlante(planteDto);
-	        return new ResponseEntity<>(createdPlante, HttpStatus.CREATED);
+	    public ResponseEntity<Plante> messages(@RequestBody PlanteDto planteDto) {
+	    	Plante createdPlante = planteService.createPlante(planteDto);
+	        return ResponseEntity.ok(createdPlante);
 	    }
 
 	    @GetMapping("/{id}")
